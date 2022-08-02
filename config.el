@@ -24,6 +24,12 @@
 (setq doom-font (font-spec :family "FantasqueSansMono Nerd Font" :size 14 )
      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 16)
      doom-big-font (font-spec :family "FantasqueSansMono Nerd Font" :size 18))
+(after! doom-themes
+  (setq doom-themes-enable-bold t
+        doom-themes-enable-italic t))
+(custom-set-faces!
+  '(font-lock-comment-face :slant italic)
+  '(font-lock-keyword-face :slant italic))
 ;;
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
@@ -37,7 +43,7 @@
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
+(setq display-line-numbers-type 'relative)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -76,20 +82,27 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 ;; beacon to hightlight on scroll
-;; (beacon-mode 1)
+(beacon-mode 1)
 ;; ;; list of bookmarks and save bookmarks
-;; (map! :leader
-;;       (:prefix ("b". "buffer")
-;;       :desc "List bookmarks" "L" #'list-bookmarks
-;;       :desc "Save current bookmarks file" "w" #'bookmark-save))
+(map! :leader
+      (:prefix ("b". "buffer")
+      :desc "List bookmarks" "L" #'list-bookmarks
+      :desc "Save current bookmarks file" "w" #'bookmark-save))
+;; scroll offset
+(setq scroll-margin 5)
+;; personal keybindings
+(map! :leader :desc "Open a terminal" "\\" #'+vterm/toggle )
+;; buffer and window movement
+(map! :n "C-h" #'previous-window-any-frame )
+(map! :n "C-l" #'next-window-any-frame )
+(map!  (:after evil
+        :m "H" #'centaur-tabs-backward ))
+(map! (:after evil
+       :m "L" #'centaur-tabs-forward))
 
 ;; global autorevert for files modified by other programms
 (global-auto-revert-mode 1)
 (setq global-auto-revert-non-file-buffers t)
-;;
-;; cursor scroll offset
-;; (setq scroll-margin 0)
-
 ;; Tabs
 (setq centaur-tabs-set-bar 'over
       centaur-tabs-set-icons t
@@ -101,7 +114,34 @@
 (map! :leader
       :desc "Toggle tabs globally" "t t" #'centaur-tabs-mode
       :desc "Toggle tabs local display" "t T" #'centaur-tabs-local-mode)
-(evil-define-key 'normal centaur-tabs-mode-map (kbd "g t l") 'centaur-tabs-forward        ; default Doom binding is 'g t'
-                                               (kbd "g t h")  'centaur-tabs-backward       ; default Doom binding is 'g T'
+(evil-define-key 'normal centaur-tabs-mode-map (kbd "S-l") 'centaur-tabs-forward        ; default Doom binding is 'g t'
+                                               (kbd "S-h")  'centaur-tabs-backward       ; default Doom binding is 'g T'
                                                (kbd "g t j")  'centaur-tabs-forward-group
                                                (kbd "g t k")    'centaur-tabs-backward-group)
+
+;; clippy describe
+(map! :leader
+      (:prefix ("c h" . "Help info from Clippy")
+       :desc "Clippy describes function under point" "f" #'clippy-describe-function
+       :desc "Clippy describes variable under point" "v" #'clippy-describe-variable))
+
+;; dired configuration
+(map! :leader
+      (:prefix ("f")
+      :desc "Jump to current directory in dired" "j" #'dired-jump))
+(setq dired-open-extensions '(("gif" . "sxiv")
+                              ("jpg" . "sxiv")
+                              ("png" . "sxiv")
+                              ("mkv" . "mpv")
+                              ("mp4" . "mpv")))
+;; modeline config
+(set-face-attribute 'mode-line nil :font "UbuntuMono Nerd Font-13")
+(setq doom-modeline-height 20     ;; sets modeline height
+      doom-modeline-bar-width 5   ;; sets right bar width
+      doom-modeline-persp-name t  ;; adds perspective name to modeline
+      doom-modeline-persp-icon t) ;; adds folder icon next to persp name
+
+;; treemacs config
+(map! "C-n" #'+treemacs/toggle )
+(setq treemacs-width 25
+      treemacs-text-scale -2)
