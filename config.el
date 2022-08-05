@@ -146,8 +146,6 @@
 (map! "C-n" #'+treemacs/toggle )
 (setq treemacs-width 25
       treemacs-text-scale -2)
-<<<<<<< HEAD
-=======
 
 (add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++11")))
 
