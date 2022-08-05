@@ -90,17 +90,12 @@
 ;; personal keybindings
 (map! :leader :desc "Open a terminal" "\\" #'+vterm/toggle )
 ;; buffer and window movement
-<<<<<<< HEAD
-(map! :n "C-h" #'previous-window-any-frame )
-(map! :n "C-l" #'next-window-any-frame )
-=======
 (map! :n "C-h" #'evil-window-left )
 (map! :n "C-j" #'evil-window-down )
 (map! :n "C-k" #'evil-window-up )
 (map! :n "C-l" #'evil-window-right )
 (map!  :after libvterm "C-S-v" #'evil-paste-after )
 (map! "C-s" #'save-buffer)
->>>>>>> 9cae865 (Added themes for org mode and another things)
 (map!  (:after evil
         :m "H" #'centaur-tabs-backward ))
 (map! (:after evil
